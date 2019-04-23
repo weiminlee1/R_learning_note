@@ -52,6 +52,11 @@ ls()显示当前的对象列表
 
 rm(object,...)删除一个或多个对象
 
+options()函数用来配置R，也就是调整各种设置
+
+example()函数可以运行例子代码
+
+dir.create('directory_name') 创建目录
 
 
 
