@@ -1,0 +1,61 @@
+R中函数的定义
+
+oddcount <- function(x) {
+  k <- 0
+  for ( n in x) {
+    if (n %% 2 == 1) k <- k + 1
+  }
+  return(k) ##返回结果
+}
+
+
+##{}相当于python中的冒号
+
+
+sumgot <- function(x){
+  sumvalue <- 0
+  for (i in x){
+    sumvalue = sumvalue + i
+  }
+  return(sumvalue)
+}
+
+note: x是函数oddcount和sumgot的形式参数，调用函数过程中传入的实际值为函数的实际参数。
+
+
+全局变量和局部变量的区别：
+  局部变量在代码块内部的变量，局限于某个固定的函数。
+  全局变量即所有函数，条件下都可以调用的变量。
+
+默认参数：
+g <- function(x,y=2,z=T){
+...}
+其中y=2, z=T即为默认参数。
+
+函数：length（x）可以获取向量x的长度或者向量x的元素个数。
+
+mode(x)可以用来显示向量x的类型
+
+paste('zhang','san',sep='') 可以把'zhang','san'连接起来---> 'zhangsan'
+
+strsplit('zhang san,' ') 可以把'zhang san'以空格分割--->'zhang','san'
+
+rbind() 按行绑定，可以把两个向量结合成一个矩阵（行，列）
+
+R中的'$'符可以用来引用变量
+
+print（x）用于输出变量x
+
+str(x)用于显示变量x的内部结构
+
+ls()显示当前的对象列表
+
+rm(object,...)删除一个或多个对象
+
+
+
+
+
+
+
+
