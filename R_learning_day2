@@ -10,7 +10,29 @@
   
   any(conditonx)和all(conditony)函数用来判断向量x,y中是否至少有一个或全部为TRUE
   
+  sum()求和  mean()求平均值  abs()求绝对值  sqrt()求平方根 round()取整
   
+  sapply()函数是simplify apply的缩写来简化这一切。调用sapply(x,f)即可对x的每一个元素使用
+  函数f(),并将结果转化为矩阵。
   
+
+NA与NULL值
+  NA代表缺失值, NULL代表不存在的值
+  在R的很多统计函数中，我们要求函数跳过缺失值
+  eg:
+    x <- c(88,NA,12,168,13)
+    mean(x) ----> NA
+    mean(x,na.rm=T) ----> 70.25
+    
+    x <- c(88,NULL,12,168,13)
+    mean(x) ----> 70.25
+    在第一个调用中，因为x中有一个缺失值NA，导致mean()无法计算均值。但可以把可选
+    的参数na.rm设置为真（T）,可以计算其余元素的均值。而R会自动跳过空值NULL。
+
+
+NULL的使用
+  NULL的一个用法是在循环中创建向量，其中每次迭代多在这个向量上增加一个元素。
+  note:类似于python中的列表添加元素---list.append()
   
+    
   
