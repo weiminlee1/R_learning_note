@@ -32,3 +32,8 @@ anscombe_tidy <- anscombe %>% mutate(observation = seq_len(n()))等同于
 anscombe_tidy=mutate(anscombe,observation = seq_len(n()))
   除了选择已存在的列，另一个常见的操作是添加新的列。这就是mutate()函数的工作了。
 mutate()函数通常将新增变量放在数据集的最后面
+  通过palette()函数，可以看到在当前调色板下，第一种颜色是黑色，第二种颜色是红色。
+这个调色板共有8种颜色，当使用颜色数大于8时，会从头开始。
+palette()## [1] "black"   "red"     "green3"  "blue"    "cyan"    "magenta" "yellow"## [8] "gray"
+调色板当然是可以改变的，比如用系统中的彩虹调色板。此时，第二位可就不是红色了。palette(rainbow(12))
+palette("default")通过再次将palette设置为”default”，可以得到默认调色板。
