@@ -1,3 +1,32 @@
+添加矫正p值
+library(tidyverse)
+library(rstatix)   
+library(ggpubr)
+
+# Pairwise t-test between groups
+stat.test <- ToothGrowth %>%
+  group_by(dose) %>%
+  t_test(len ~ supp) %>%
+  adjust_pvalue() %>%
+  mutate(y.position = 35)
+stat.test
+# A tibble: 3 x 9
+   dose   .y. group1 group2  statistic      p method  p.adj y.position
+                         
+1   0.5   len     OJ     VC  3.1697328 0.0064 T-test 0.0128         35
+2   1.0   len     OJ     VC  4.0327696 0.0010 T-test 0.0030         35
+3   2.0   len     OJ     VC -0.0461361 0.9600 T-test 0.9600         35
+# Create a box plot and add the p-value
+p <- ggboxplot(
+  ToothGrowth, x = "supp", y = "len",
+  color = "supp", palette = "jco",
+  facet.by = "dose", ylim = c(0, 40)
+)
+
+p + stat_pvalue_manual(stat.test, label = "p.adj")
+
+
+
 R中 %>% 是管道符号，将左边表达式的结果作为输入传入右边的表达式。
 anscombe_tidy <- anscombe %>% mutate(observation = seq_len(n()))等同于
 anscombe_tidy=mutate(anscombe,observation = seq_len(n()))
