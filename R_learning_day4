@@ -58,6 +58,10 @@ pie(rep(1, 12), labels = "", col = b2p2(seq(0, 1, len = 12)), border = b2p2(seq(
 二是，颜色都比较协调。更多指引见其官网ColorBrewer。
 
 
+typeof()函数显示对象的数据类型 
+class()
+sessionInfo()显示R的版本信息
+lapply(data,fun) 将fun函数运用到data中
 
 
 
