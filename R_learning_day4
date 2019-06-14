@@ -1,3 +1,5 @@
 R中 %>% 是管道符号，将左边表达式的结果作为输入传入右边的表达式。
 anscombe_tidy <- anscombe %>% mutate(observation = seq_len(n()))等同于
 anscombe_tidy=mutate(anscombe,observation = seq_len(n()))
+  除了选择已存在的列，另一个常见的操作是添加新的列。这就是mutate()函数的工作了。
+mutate()函数通常将新增变量放在数据集的最后面
