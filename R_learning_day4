@@ -36,4 +36,28 @@ mutate()函数通常将新增变量放在数据集的最后面
 这个调色板共有8种颜色，当使用颜色数大于8时，会从头开始。
 palette()## [1] "black"   "red"     "green3"  "blue"    "cyan"    "magenta" "yellow"## [8] "gray"
 调色板当然是可以改变的，比如用系统中的彩虹调色板。此时，第二位可就不是红色了。palette(rainbow(12))
+  传入数字12，获得了12个彩虹颜色的颜色列表。传入1000获得彩虹转盘
 palette("default")通过再次将palette设置为”default”，可以得到默认调色板。
+  R语言中除了自带rainbow()调色板还有以下几种:
+  par(mfrow = c(2, 2))
+  pie(rep(1, 12), col = heat.colors(12), main = "heat")
+  pie(rep(1, 12), col = terrain.colors(12), main = "terrain")
+  pie(rep(1, 12), col = topo.colors(12), main = "topo")
+  pie(rep(1, 12), col = cm.colors(12), main = "cm")
+ 
+##colorRamp()和colorRampPalette()
+par(mfrow = c(1, 2))
+b2p1 <- colorRampPalette(c("blue", "purple"))
+b2p2 <- colorRamp(c("blue", "purple"))
+pie(rep(1, 12), labels = "", col = b2p1(12), border = b2p1(12), main = "colorRampPalette")
+pie(rep(1, 12), labels = "", col = b2p2(seq(0, 1, len = 12)), border = b2p2(seq(0,1, len = 12)), main = "colorRamp")
+
+##RColorBrewer包
+虽然说RColorBrewer包中实际用到的就只有brewer.pal()函数，但是包中的两个优点使得其非常实用。
+一是，包中颜色板被划分为序列型(sequential)、离散型(diverging)、分类型（qualitative)这三种基本能满足统计作图需要的类型；
+二是，颜色都比较协调。更多指引见其官网ColorBrewer。
+
+
+
+
+
