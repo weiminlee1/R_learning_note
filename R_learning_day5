@@ -1,1 +1,10 @@
 dput(object):用于保存R的数据结构
+
+> name <- c('weimin','weihua','xiaohua')
+> salary <- c(123,345,555)
+> a <- data.frame(name,salary)
+
+dput(a)
+structure(list(name = structure(c(2L, 1L, 3L), .Label = c("weihua", 
+"weimin", "xiaohua"), class = "factor"), salary = c("1023", "1245", 
+"1455")), row.names = c(NA, -3L), class = "data.frame")
