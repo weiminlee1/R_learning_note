@@ -8,3 +8,44 @@ dput(a)
 structure(list(name = structure(c(2L, 1L, 3L), .Label = c("weihua", 
 "weimin", "xiaohua"), class = "factor"), salary = c("1023", "1245", 
 "1455")), row.names = c(NA, -3L), class = "data.frame")
+
+
+R绘制条形图
+> barplot(height)
+如果height是一个矩阵而不是一个向量，则绘图结果将是一幅堆砌条形图或分组条形图。
+beside=FALSE设置成堆砌（默认），beside=TRUE设置为分组条形图
+
+> library(vcd)
+> counts <- table(Arthritis$Improved, Arthritis$Treatment)
+> counts
+        
+         Placebo Treated
+  None        29      13
+  Some         7       7
+  Marked       7      21
+> barplot(counts,
++         main="Stacked Bar Plot",
++         xlab="Treatment", ylab="Frequency",
++         col=c("red", "yellow", "green"),
++         legend=rownames(counts))
+> barplot(counts,
++         main="Grouped Bar Plot",
++         xlab="Treatment", ylab="Frequency",
++         col=c("red", "yellow", "green"),
++         legend=rownames(counts), beside=TRUE)
+
+
+条形图的微调
+
+有若干种方式可以微调条形图的外观。具体就是调节一些相关的设置参数，
+例如cex.name可以用来调整字号。详细参考一些文档。par()函数能够让你对R的默认图形作出大量修改
+
+par(mar=c(5, 8, 4, 2))  # 增加y边界大小
+par(las=2)              # 旋转条形的标签
+counts <- table(Arthritis$Improved)
+barplot(counts,
+        main="Treatment Outcome",
+        horiz=TRUE,
+        cex.names = 0.8,    # 缩小字体大小，让标签更合适
+        names.arg = c("No Improvement", "Some Improvement",
+                      "Marked Improvement")) # 修改标签文本
