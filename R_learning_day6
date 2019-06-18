@@ -1,0 +1,28 @@
+aggregate()函数
+aggregate也是跟SAC有关系的一个函数(stats包中)：先将对象分解为不同的组别(回忆一下split函数)，然后分个处理，最后合并显示
+具体地说，aggregate()函数将数据集(依据指定方法)拆分成不同子集，分别计算各自的统计数据，并(组合)返回计算结果。
+此函数一般对三种对象做处理：data.frame, formula 和 ts (即时间序列).
+
+ x=data.frame(name=c("张三","李四","王五","赵六"),sex=c("M","M","F","F"),age=c(20,40,22,30),height=c(166,170,150,155))
+
+
+构造一个很简单的数据，一组人的性别、年龄和身高，可以用aggregate函数来求不同性别的平均年龄和身高
+
+
+aggregate(x[,3:4],by=list(sex=x$sex),FUN=mean)
+
+ 
+
+几个注意点：
+
+    字符或者factor类型的列不要一起加入计算，会报错
+    by参数要构造成list，如果有多个字段，by就对应队列，和group by多个字段是同样的道理
+
+x=data.frame(name=c("张三","李四","王五","赵六"),
+             sex=c("M","M","F","F"),age=c(20,40,22,30),height=c(166,170,150,155))
+aggregate(x[,3:4],by=list(sex=x$sex),FUN=mean)
+
+
+# sex age height
+# 1   F  26  152.5
+# 2   M  30  168.0
