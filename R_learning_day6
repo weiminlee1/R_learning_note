@@ -26,3 +26,36 @@ aggregate(x[,3:4],by=list(sex=x$sex),FUN=mean)
 # sex age height
 # 1   F  26  152.5
 # 2   M  30  168.0
+
+因为aggregate()仅允许每次调用中使用单返回值函数，而无法一次返回若干个统计量。为了完成这个任务，可以采用by()函数。格式：
+ by(data, INDICES, FUN)
+其中，data为一个数据框或矩阵，INDICES是一个因子或因子组成的列表，定义了分组，FUN是任意函数。
+
+> mystats <- function(x, na.omit=FALSE){
++             if (na.omit)
++                 x <- x[!is.na(x)]
++             m <- mean(x)
++             n <- length(x)
++             s <- sd(x)
++             skew <- sum((x-m)^3/s^3)/n
++             kurt <- sum((x-m)^4/s^4)/n - 3
++             return(c(n=n, mean=m, stdev=s, skew=skew, kurtosis=kurt))}
+  
+> myvars <- c('mpg', 'hp', 'wt')
+> dstats <- function(x) sapply(x, mystats)
+> by(mtcars[myvars], mtcars$am, dstats)
+mtcars$am: 0
+                 mpg           hp         wt
+n        19.00000000  19.00000000 19.0000000
+mean     17.14736842 160.26315789  3.7688947
+stdev     3.83396639  53.90819573  0.7774001
+skew      0.01395038  -0.01422519  0.9759294
+kurtosis -0.80317826  -1.20969733  0.1415676
+------------------------------------------------ 
+mtcars$am: 1
+                 mpg          hp         wt
+n        13.00000000  13.0000000 13.0000000
+mean     24.39230769 126.8461538  2.4110000
+stdev     6.16650381  84.0623243  0.6169816
+skew      0.05256118   1.3598859  0.2103128
+kurtosis -1.45535200   0.5634635 -1.1737358  
