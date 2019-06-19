@@ -1,0 +1,191 @@
+独立性检验
+
+  卡方独立性检验、Fisher精确检验和Cochran-Mantel-Haenszel检验。
+  
+卡方独立性检验,可以通过p-value来看两个变量是否独立。
+使用chisq.test()函数对二联表的行变量和列变量进行卡方独立性检验。
+> library(grid)
+> library(vcd)
+> mytable <- xtabs(~ Treatment+Improved, data=Arthritis)
+> chisq.test(mytable)
+
+    Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 13.055, df = 2, p-value = 0.001463
+# 治疗情况和改善情况不独立
+
+> mytable <- xtabs(~ Sex+Improved, data=Arthritis)
+> chisq.test(mytable)
+
+    Pearson's Chi-squared test
+
+data:  mytable
+X-squared = 4.8407, df = 2, p-value = 0.08889
+
+Warning message:
+In chisq.test(mytable) : Chi-squared近似算法有可能不准
+
+# 性别和改善情况独立
+ 
+
+Fisher精确检验
+使用fisher.test()函数进行Fisher精确检验，Fisher检验的原假设是：边界固定的列联表中行和列是相互独立的。
+> mytable <- xtabs(~ Treatment+Improved, data=Arthritis)
+> fisher.test(mytable)
+
+    Fisher's Exact Test for Count Data
+
+data:  mytable
+p-value = 0.001393
+alternative hypothesis: two.sided
+
+Cochran-Mantel-Haenszel检验
+使用mantelhaen.test()函数，原假设：两个名义变量在第三个变量中的每一层中都是条件独立的。此检验假设不存在三阶交互作用。
+下列代码可以检验治疗情况和改善情况在性别的每一水平下是否独立。(结果表明并不独立)
+> mytable <- xtabs(~ Treatment+Improved+Sex, data=Arthritis)
+> mantelhaen.test(mytable)
+
+    Cochran-Mantel-Haenszel test
+
+data:  mytable
+Cochran-Mantel-Haenszel M^2 = 14.632, df = 2, p-value =
+0.0006647
+
+相关性的度量
+
+显著性检验评估了是否存在充分的证据以拒绝变量间相互独立的原假设。如果可以拒绝原假设，那么你的兴趣就会自然地转向用以衡量相关性强弱的相关性度量。
+
+vcd包中的assocstats()函数可以用来计算二联表的phi系数、列联系数和Cramer's V系数。
+> library(vcd)
+> mytable <- xtabs(~ Treatment+Improved, data=Arthritis)
+> assocstats(mytable)
+                    X^2 df  P(> X^2)
+Likelihood Ratio 13.530  2 0.0011536
+Pearson          13.055  2 0.0014626
+
+Phi-Coefficient   : NA 
+Contingency Coeff.: 0.367 
+Cramer's V        : 0.394 
+vcd包拥有优秀的、用于可视化多维数据集中类别型变量关系的函数，可以绘制马萨克图和关联图。ca包也提供了对应分析函数允许使用多种几何表示
+
+
+相关
+相关系数可以用来描述定量变量之间的关系。
+
+相关的类型
+R可以计算多种相关系数，包括Pearson相关系数、Spearman相关系数、Kendall相关系数、偏相关系数、多分格相关系数和多系列相关系数（具体意义自查）。
+Pearson相关系数衡量了两个定量变量之间的线性相关程度。Spearman等级相关系数则衡量分级定序变量之间的相关程度。Kendall's Tau相关系数也是一种非参数的等级相关度量。
+cor()计算这三种相关系数，而cov()计算协方差
+> states <- state.x77[, 1:6]
+> cov(states)
+              Population      Income   Illiteracy     Life Exp
+Population 19931683.7588 571229.7796  292.8679592 -407.8424612
+Income       571229.7796 377573.3061 -163.7020408  280.6631837
+Illiteracy      292.8680   -163.7020    0.3715306   -0.4815122
+Life Exp       -407.8425    280.6632   -0.4815122    1.8020204
+Murder         5663.5237   -521.8943    1.5817755   -3.8694804
+HS Grad       -3551.5096   3076.7690   -3.2354694    6.3126849
+                Murder      HS Grad
+Population 5663.523714 -3551.509551
+Income     -521.894286  3076.768980
+Illiteracy    1.581776    -3.235469
+Life Exp     -3.869480     6.312685
+Murder       13.627465   -14.549616
+HS Grad     -14.549616    65.237894
+> cor(states)
+            Population     Income Illiteracy    Life Exp     Murder
+Population  1.00000000  0.2082276  0.1076224 -0.06805195  0.3436428
+Income      0.20822756  1.0000000 -0.4370752  0.34025534 -0.2300776
+Illiteracy  0.10762237 -0.4370752  1.0000000 -0.58847793  0.7029752
+Life Exp   -0.06805195  0.3402553 -0.5884779  1.00000000 -0.7808458
+Murder      0.34364275 -0.2300776  0.7029752 -0.78084575  1.0000000
+HS Grad    -0.09848975  0.6199323 -0.6571886  0.58221620 -0.4879710
+               HS Grad
+Population -0.09848975
+Income      0.61993232
+Illiteracy -0.65718861
+Life Exp    0.58221620
+Murder     -0.48797102
+HS Grad     1.00000000
+> cor(states, method='spearman')
+           Population     Income Illiteracy   Life Exp     Murder
+Population  1.0000000  0.1246098  0.3130496 -0.1040171  0.3457401
+Income      0.1246098  1.0000000 -0.3145948  0.3241050 -0.2174623
+Illiteracy  0.3130496 -0.3145948  1.0000000 -0.5553735  0.6723592
+Life Exp   -0.1040171  0.3241050 -0.5553735  1.0000000 -0.7802406
+Murder      0.3457401 -0.2174623  0.6723592 -0.7802406  1.0000000
+HS Grad    -0.3833649  0.5104809 -0.6545396  0.5239410 -0.4367330
+              HS Grad
+Population -0.3833649
+Income      0.5104809
+Illiteracy -0.6545396
+Life Exp    0.5239410
+Murder     -0.4367330
+HS Grad     1.0000000
+
+cor()函数非常的实用。
+
+偏相关是指控制一个或多个定量变量时，另外两个定量变量之间的相互关系。可以使用ggm包中的pcor()函数来计算，使用前需要安装。
+
+polycor包中的hetcor()函数可以计算一种混合的相关矩阵，有兴趣可以看一下。
+
+
+相关性的显著性检验
+
+常用的原假设为变量间不相关（总体相关系数为0）。可以使用cor.test()对单个的Pearson、Spearman和Kendall相关系数进行检验。
+
+格式为： cor.test(x, y, alternative = , method =)
+> cor.test(states[,3], states[, 5])
+
+    Pearson's product-moment correlation
+
+data:  states[, 3] and states[, 5]
+t = 6.8479, df = 48, p-value = 1.258e-08
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.5279280 0.8207295
+sample estimates:
+      cor 
+0.7029752 
+cor.test()每次只能检验一种相关关系，而psych包中提供的corr.test()可以一次性做更多事情。
+在多元正态性的假设下，psych包中的pcor.test()可以用来检验控制一个或多个额外变量时两个变量之间的条件独立性
+
+t检验
+独立样本t检验
+针对两组的独立样本t检验可以用于检验两个总体的均值相等的假设。这里假设两组数据是独立的，并且从正态总体中抽得。
+调用格式：
+
+​ t.test(y ~ x, data) # 这里y,x都是某个data数据集中的变量
+
+​ t.test(y1, y2) # 这里就是自己输入的了
+
+t.test(x1,x2)
+
+	Welch Two Sample t-test
+
+data:  x1 and x2
+t = 51.032, df = 49, p-value < 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 4259.999 4609.261
+sample estimates:
+mean of x mean of y 
+  4435.80      1.17 
+
+组间差异的非参数检验
+如果数据无法满足t检验或ANOVA的参数假设，可以转向非参数检验。
+两组的比较
+若两组数据独立，可以使用Wilcoxon秩和检验（也称为Mann-Whitney U检验）来评估观测是否是从相同的概率分布中抽得的。
+调用格式：
+​   wilcox.test(y ~ x, data)
+​   wilcox.test(y1, y2)
+默认进行双侧检验，可以添加参数exact来进行精确检验，指定alternative='less'或者greater进行有方向的检验。
+Wilcoxon符号秩和检验是非独立样本t检验的一种非参数替代方法。它适用于两组成对数据和无法保证正态性假设的情境。调用格式和上述的Mann-Whitney U检验完全相同，不过还（要）可以添加参数paired = TRUE。
+多于两组
+如果各组独立，使用Kruskal-Wallis检验：
+kruskal.test(y ~ A, data)
+如果不独立，使用Friedman检验：
+friedman.test(y ~ A | B, data)
+
+
