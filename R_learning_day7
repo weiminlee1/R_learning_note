@@ -23,3 +23,44 @@
   am      mpg       hp        wt
 1  0 3.833966 53.90820 0.7774001
 2  1 6.166504 84.06232 0.6169816
+
+
+​生成频数表
+
+函数 	描述
+table(var1, var2, ..., varN) 	使用N个类别变量（因子）创建一个N维列联表
+xtabs(formula, data) 	根据一个公式和一个矩阵或数据框创建一个一个N维列联表
+prop.table(table, margins) 	依margins定义的边际列联表将表中条目表示为分数形式
+margin.table(table, margins) 	依margins定义的边际列联表计算表中条目的和
+addmargins(table, margins) 	将概述边margins（默认求和）放入表中
+ftable(table) 	创建一个紧凑的“平铺式”列联表
+
+
+一维列联表
+
+使用table()函数生成简单的频数统计表
+> library(grid)
+> library(vcd)
+> head(Arthritis)
+  ID Treatment  Sex Age Improved
+1 57   Treated Male  27     Some
+2 46   Treated Male  29     None
+3 77   Treated Male  30     None
+4 17   Treated Male  32   Marked
+5 36   Treated Male  46   Marked
+6 23   Treated Male  58   Marked
+> mytable <- with(Arthritis, table(Improved)) ##table(Arthristis['Improved'])
+> mytable
+Improved
+  None   Some Marked 
+    42     14     28 
+# 使用prop.table()将频数转为比例值或百分比
+> prop.table(mytable)
+Improved
+     None      Some    Marked 
+0.5000000 0.1666667 0.3333333 
+> prop.table(mytable)*100
+Improved
+    None     Some   Marked 
+50.00000 16.66667 33.33333 
+
