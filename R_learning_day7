@@ -64,3 +64,39 @@ Improved
     None     Some   Marked 
 50.00000 16.66667 33.33333 
 
+二维列联表
+
+table()函数使用格式为：
+​   table(A, B) # A为行变量，B为列变量
+xtabs()函数可以使用公式风格的输入创建列联表：
+mytable <- xtabs(~ A + B, data = mydata)
+mydata是一个矩阵或数据框。（看多了发现大部分函数支持数据框也会支持矩阵，说明他们用法很大程度的相似）
+> mytable <- xtabs(~ Treatment + Improved, data=Arthritis)
+> mytable
+         Improved
+Treatment None Some Marked
+  Placebo   29    7      7
+  Treated   13    7     21
+# 使用margin.table()和prop.table()函数分别生成边际频数和比例
+> margin.table(mytable, 1)
+Treatment
+Placebo Treated 
+     43      41 
+> prop.table(mytable,1)     # 1指代table()语句中的第一个变量
+         Improved
+Treatment      None      Some    Marked
+  Placebo 0.6744186 0.1627907 0.1627907
+  Treated 0.3170732 0.1707317 0.5121951
+
+# 使用addmargins()函数为这些表格添加边际和
+> addmargins(mytable)
+         Improved
+Treatment None Some Marked Sum
+  Placebo   29    7      7  43
+  Treated   13    7     21  41
+  Sum       42   14     28  84
+
+
+addmargins(mytable,2)添加行和，addmargins(mytable,1)添加列和。
+注意：table()函数默认忽略缺失值（NA）。要在频数统计中将NA视为一个有效的类别，设定参数useNA="ifany"。
+
