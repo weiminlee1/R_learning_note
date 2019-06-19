@@ -188,4 +188,12 @@ kruskal.test(y ~ A, data)
 如果不独立，使用Friedman检验：
 friedman.test(y ~ A | B, data)
 
+scale(x, center = TRUE, scale = TRUE) 	为数据对象x按列进行中心化或标准化
+注意： 默认情况下，函数scale()对矩阵或数据框的指定列进行均值为0、标准差为1的标准化。要对每一列进行任意均值和标准差的标准化，可以使用如下的代码：
+newdata <- scale(mydata)*SD +M
+其中，M是想要的均值，SD为想要的标准差。
+要对指定列而不是整个矩阵或数据框进行标准化，可以使用这样的代码：
+newdata <- transform(mydata, myvar = scale(myvar)*10 + 50)
+此句将变量myvar标准化为均值50、标准差为10的变量。
+
 
