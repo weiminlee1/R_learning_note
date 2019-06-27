@@ -1,0 +1,28 @@
+集合运算
+
+
+A <- 1:10
+B <- seq(5,15,2)
+C <- 1:5 
+
+并集
+union(A,B)
+
+交集
+intersect(A,B)
+
+求A-B只在A中存在，B中不存在
+setdiff(A,B)
+
+求B-A
+setdiff(B,A)
+
+检验集合A,B是否相同
+setequal(A,B)
+
+检验元素10是否属于集合C
+is.element(10,C)
+
+检验集合A是否包含C
+all(C%in%A)
+
