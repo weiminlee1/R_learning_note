@@ -1,0 +1,27 @@
+R包：package 是一系列函数，帮助文件，数据等的封装。
+下载地址：CRAN bioconductor
+R包的使用方式：一将包安装在本地上，二将包导入
+
+使用getOption命令检查预装包:
+getOption('defaultPackages')
+
+查看当前已导入的包
+（.packages()）
+
+# 列出当前可用包
+(.packages(all.available = TRUE))
+
+导入包
+library('packages')
+
+安装包
+install.packages('package name')
+install.packages(c('package name1','package name2',...))
+ 这里有一个新的重要知识点，单独列出。
+# 可以使用devtools包的进行其他资源包安装，比如全世界在用的github
+# 先安装devtools
+install.packages("devtools")
+library(devtools)
+install_github("ggplot2") # 例如安装ggplot2
+
+sessionInfo() 显示所用R版本信息
