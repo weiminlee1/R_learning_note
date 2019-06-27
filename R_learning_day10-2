@@ -1,0 +1,164 @@
+基本图形绘制可查看基本图形的绘制。
+略讲一下创建图形的简单R程序，自己可以根据需要详细了解和掌握。
+散点图
+attach(mtcars)
+plot(wt, mpg,
+     main = "Basic Scatter plot of MPG vs. Weight",
+     xlab = "Car Weight (lbs/1000)",
+     ylab = "Miles Per Gallon", pch=19)
+
+abline(lm(mpg~wt), col="red", lwd=2, lty=1)
+lines(lowess(wt, mpg), col="blue", lwd=2, lty=2)
+
+该代码加载mtcars数据框，创建一幅基本的散点图。abline()函数用来添加最佳拟合的线性直线，而lowess()函数用来添加一条平滑曲线。（R有两个平滑曲线拟合函数：lowess()和loess()，两者默认值不同，使用时小心注意）
+library(car)
+scatterplot(mpg ~ wt | cyl, data=mtcars, lwd=2, span=0.75,
+           main="Scatter Plot of MPG vs. Weight by # Cylinders",
+           xlab="Weight of Cars (lbs/1000)",
+           ylab="Miles Per Gallon",
+           legend.plot=TRUE,
+           id.method="identity",
+           labels=row.names(mtcars),
+           boxplots="xy")
+
+表达式mpg~wt|cyl表示按条件绘图（即按cyl的水平分别绘制mpg和wt的关系图）。mpg和weight的边界箱线图通过boxplots选项来绘制。
+散点图矩阵
+下面程序中用不同方法创建了两个散点图矩阵。
+# 3 basic scatter plot Matrix
+pairs(~mpg+disp+drat+wt, data=mtcars,
+      main="Basic Scatter Plot Matrix")
+
+# 4 function scatterplotMatrix() in car package
+library(car)
+scatterplotMatrix(~ mpg + disp + drat + wt, data = mtcars,
+                  spread=FALSE, smoother.args=list(lty=2),
+                  main="Scatter Plot Matrix via car package")
+
+高密度散点图
+当数据点重叠很严重时，用散点图来观察变量关系就显得不好了。所以我们可以通过一些额外的处理来凸显出数据中最为重要的信息，试试看吧～
+# 5 scatter plot with high density
+set.seed(1234)
+n <- 10000
+c1 <- matrix(rnorm(n, mean=0, sd=.5),  ncol=2)
+c2 <- matrix(rnorm(n, mean=3, sd=2), ncol=2)
+mydata <- rbind(c1, c2)
+mydata <- as.data.frame(mydata)
+names(mydata) <- c("x", "y")
+
+with(mydata, plot(x, y, pch=19, main="Scatter Plot with 10,000 Observations"))
+
+with(mydata, smoothScatter(x, y, main="Scatter Plot with 10,000 Observations"))
+
+library(hexbin)
+with(mydata, {
+    bin <- hexbin(x, y, xbins=50)
+    plot(bin, mian="Hexagonal Binning with 10,000 Observation")
+})
+
+运行示例代码，观察两幅图形的效果。
+三维散点图
+这段的示例代码显示了散点图形的三维效果。有两种不同的绘制方式：
+# 6 plot 3-dimension scatter figure
+library(scatterplot3d)
+attach(mtcars)
+scatterplot3d(wt, disp, mpg,
+              main='Basic 3D Scatter Plot')
+
+# more detail options
+library(scatterplot3d)
+attach(mtcars)
+scatterplot3d(wt, disp, mpg,
+              pch = 16,
+              highlight.3d = TRUE,
+              type = 'h',
+              main='Basic 3D Scatter Plot with Vertical Lines')
+
+# more packages, like
+library(car)
+with(mtcars, scatter3d(wt, disp, mpg))
+
+气泡图
+基本思想：先创建一个二维散点图，然后用点的大小来代表第三个变量的值（可以用不同的方法喔）。下面实例中用圆圈代表第三个变量的值大小。
+# 7  bubble plot
+attach(mtcars)
+r <- sqrt(disp/pi)
+symbols(wt, mpg, circles = r, inches = 0.30,
+        fg='white', bg='lightblue',
+        main='Bubble Plot with point size proportional to displacement',
+        ylab='Miles Per Gallon',
+        xlab='Weight of Car (lbs/1000)')
+text(wt, mpg, rownames(mtcars), cex = .6)
+detach(mtcars)
+
+折线图
+折线图的创建非常简单，使用plot函数即可，不过我们需要根据需要设定相应的类型。因为是经常遇到的，所以下面的实例代码也是干货满满，应付一般的展示需求不在话下。
+# 8 zhexian tu
+opar <- par(no.readonly = T)
+par(mfrow=c(1,2))
+t1 <- subset(Orange, Tree==1)
+plot(t1$age, t1$circumference,
+     xlab = "Age (days)",
+     ylab = "Circumference (mm)",
+     main = "Orange Tree 1 Growth")
+plot(t1$age, t1$circumference,
+     xlab = "Age (days)",
+     ylab = "Circumference (mm)",
+     main = "Orange Tree 1 Growth",
+     type = 'b')
+par(opar)
+
+# an example
+Orange$Tree <- as.numeric(Orange$Tree)
+ntrees <- max(Orange$Tree)
+
+xrange <- range(Orange$age)
+yrange <- range(Orange$circumference)
+
+plot(xrange, yrange,
+     type='n',
+     xlab = 'Age (days)',
+     ylab = 'Circumference (mm)')
+colors <- rainbow(ntrees)
+linetype <- c(1:ntrees)
+plotchar <- seq(18, 18+ntrees, 1)
+
+for (i in 1:ntrees) {
+    tree <- subset(Orange, Tree==i)
+    lines(tree$age, tree$circumference,
+          type='b',
+          lwd=2,
+          lty=linetype[i],
+          col=colors[i],
+          pch=plotchar[i])
+}
+
+title("Tree Growth", "example of line plot")
+legend(xrange[1], yrange[2],
+       1:ntrees,
+       cex=.8,
+       col = colors,
+       pch = plotchar,
+       lty = linetype,
+       title = "Tree")
+
+
+相关图
+这里提供的相关图实例比较炫酷，生成的图形非常悦目。只需要下载相应的包，使用非常简单，试试吧。
+# 9 correlation plot
+options(digits = 2)
+cor(mtcars)
+# use corrgram package
+library(corrgram)
+corrgram(mtcars, order=TRUE, lower.panel = panel.shade,
+         upper.panel = panel.pie, text.panel = panel.txt,
+         main="Corrgram of mtcars interconnections")
+
+马赛克图
+这个图显示效果很好，但是展示不是特别好，因为难以理解。在马赛克图中，嵌套矩形面积正比于单元格频率，其中该频率即多维列链表中的频率。颜色和/或阴影可表示拟合模型的残差值。
+# 10 mosaic plot
+ftable(Titanic)
+library(vcd)
+mosaic(~Class+Sex+Age+Survived, data=Titanic, shade=T, legend=T)
+
+图形中信息量很大，最好确实需要才画这个，适用于变量类型很多的时候进行结果展示。
+
