@@ -1,0 +1,18 @@
+### R中安装包路径设置
+
+- 将包安装到指定路径并加载
+
+  ```
+  install.packages('package1',lib='path1')
+  library('package1',lib.loc='path1')
+  
+  ```
+
+- 将路径设置为全局
+
+  ```
+  .libPaths(c(.libPaths(), 'path1'))
+  .libPaths()
+  ```
+
+  
